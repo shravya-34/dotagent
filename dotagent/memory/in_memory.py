@@ -3,7 +3,6 @@ from pydantic import BaseModel
 
 from dotagent.memory import BaseMemory
 
-
 class SimpleMemory(BaseMemory, BaseModel):
     def add_memory(self, prompt: str, llm_response: Any) -> None:
         """Add a self-created message to the store"""

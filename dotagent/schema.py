@@ -2,15 +2,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import (
-    Any,
-    Dict,
-    List,
-    Optional,
-    Sequence,
-    TypeVar,
-    Union,
-)
+from typing import (Any, Dict, List, Optional, Sequence, TypeVar, Union)
 import uuid
 from dotagent.load.serializable import Serializable
 from pydantic import BaseModel, Extra, Field, root_validator

@@ -3,6 +3,8 @@
 # twitter : http://twitter.com/thegautam
 
 import os
+import sys 
+sys.path.append('D:\DotagentDemo\dotagent')
 import openai
 import streamlit as st
 import dotagent.compiler as compiler

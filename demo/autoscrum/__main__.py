@@ -1,8 +1,5 @@
-
-
 import argparse
 from autoscrum.autoscrum import AutoScrum
-
 
 def main():
     parser = argparse.ArgumentParser(description='AutoScrum Demo')

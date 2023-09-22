@@ -14,7 +14,6 @@ import regex
 
 from ._llm import LLM, LLMSession, SyncSession
 
-
 class MalformedPromptException(Exception):
     pass
 
@@ -288,7 +287,7 @@ class OpenAI(LLM):
             if found_partial:
                 cached_out = out
                 continue
-            
+
             # if we get here, we are not starting a stop sequence, so we can emit the output
             else:
                 cached_out = None

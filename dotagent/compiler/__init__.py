@@ -20,8 +20,8 @@ llm = None
 class Compiler(types.ModuleType):
     def __call__(self, template, llm=None, cache_seed=0, logprobs=None, silent=None, async_mode=False, stream=None, caching=None, await_missing=False, logging=False, memory=None, memory_threshold=1, **kwargs):
         return Program(template, llm=llm, cache_seed=cache_seed, logprobs=logprobs, silent=silent, async_mode=async_mode, stream=stream, caching=caching, await_missing=await_missing, logging=logging, memory=memory, memory_threshold=memory_threshold, **kwargs)
-sys.modules[__name__].__class__ = Compiler
 
+sys.modules[__name__].__class__ = Compiler
 
 def load(Compiler_file):
     ''' Load a Compiler program from the given text file.

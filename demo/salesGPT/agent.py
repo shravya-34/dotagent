@@ -1,23 +1,25 @@
+import sys
+sys.path.append(r'D:\DotagentDemo\dotagent')
 
-from typing import Any, Dict, Optional, Union
+import os
+from dotagent import compiler
 from dotagent.agent.base_agent import BaseAgent
 from dotagent.llms._openai import OpenAI
-from dotagent import compiler
-from pathlib import Path
-import pkg_resources as pg
-import logging
 from dotagent.memory import SimpleMemory
+from pathlib import Path
 
-path = pg.resource_filename(__name__, 'prompt.hbs')
+from dotenv import load_dotenv
+load_dotenv()
+
+path = Path(__file__).parent / 'prompt.hbs'
 salesagent_prompt_template = Path(path).read_text()
 
 sales_coversation_memory = SimpleMemory()
 
 class SalesAgent(BaseAgent):
-
     def __init__(self,
-                 use_tools: bool = False,
-                 prompt_template :str = salesagent_prompt_template,
+                use_tools: bool = False,
+                prompt_template :str = salesagent_prompt_template,
                 salesperson_name: str = "Ted Lasso",
                 salesperson_role: str = "Business Development Representative",
                 company_name: str = "Sleep Haven",
@@ -26,7 +28,7 @@ class SalesAgent(BaseAgent):
                 conversation_purpose: str = "find out whether they are looking to achieve better sleep via buying a premier mattress.",
                 conversation_type: str = "call",
                 memory = sales_coversation_memory,
-                 **kwargs):
+                **kwargs):
         super().__init__(**kwargs)
 
         self.prompt_template = prompt_template
@@ -39,11 +41,11 @@ class SalesAgent(BaseAgent):
         self.conversation_purpose = conversation_purpose
         self.conversation_type = conversation_type
         self.memory = memory
-
         self.llm = OpenAI('gpt-3.5-turbo')
 
         self.compiler = compiler(
             llm = self.llm,
+            OPENAI_API_KEY = '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',
             template = self.prompt_template,
             salesperson_name = salesperson_name,
             salesperson_role = salesperson_role,
@@ -54,36 +56,12 @@ class SalesAgent(BaseAgent):
             conversation_type = conversation_type,
             caching=kwargs.get('caching'),
             memory = self.memory
-            )
+        )
 
     def agent_type(self):
         return "chat"
-    
-    def run(self, **kwargs) -> Union[str, Dict[str, Any]]:
-        """Run the agent to generate a response to the user query."""
-    
-        _knowledge_variable = self.get_knowledge_variable
 
-        if _knowledge_variable:
-            if kwargs.get(_knowledge_variable):
-                query = kwargs.get(_knowledge_variable)
-                retrieved_knowledge = self.get_knowledge(query)
-                output = self.compiler(RETRIEVED_KNOWLEDGE = retrieved_knowledge, **kwargs, silent = True)
-            else:
-                raise ValueError("knowledge_variable not found in input kwargs")
-        else:
-            output = self.compiler(**kwargs, silent = True)
-
-        if self.return_complete:
-            return output
-        
-        _output_key = self.output_key if self.output_key is not None else self.get_output_key(output)
-
-        if output.variables().get(_output_key):
-            return output[_output_key]
-        else:
-            logging.warning("Output key not found in output, so full output returned")
-            return output
-
-        
-
+agent = SalesAgent()
+print(agent.run(user_text = "hello!?"))
+print(agent.run(user_text = "I am doing good."))
+print(agent.run(user_text = "Not much satisfied.he"))

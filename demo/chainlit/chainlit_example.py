@@ -1,4 +1,6 @@
 # Import necessary modules and libraries
+import sys 
+sys.path.append('D:\DotagentDemo\dotagent')
 import dotagent.compiler as compiler
 from dotagent.compiler._program import Log
 from dotagent import memory
