@@ -7,31 +7,13 @@ import re
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import Enum
-from typing import (
-    AbstractSet,
-    Any,
-    Callable,
-    Collection,
-    Dict,
-    Iterable,
-    List,
-    Literal,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    TypedDict,
-    TypeVar,
-    Union,
-    cast,
-)
+from typing import (AbstractSet,Any,Callable,Collection,Dict,Iterable,List,Literal,Optional,Sequence,Tuple,Type,TypedDict,TypeVar,Union,cast,)
 
 from dotagent.schema import DocumentNode, Document, BaseDocumentTransformer
 
 logger = logging.getLogger(__name__)
 
 TS = TypeVar("TS", bound="TextSplitter")
-
 
 def _split_text_with_regex(
     text: str, separator: str, keep_separator: bool

@@ -41,11 +41,12 @@ class SalesAgent(BaseAgent):
         self.conversation_purpose = conversation_purpose
         self.conversation_type = conversation_type
         self.memory = memory
-        self.llm = OpenAI('gpt-3.5-turbo')
+        self.llm = OpenAI(os.environ.get('OPENAI_MODEL'))
+        self.OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 
         self.compiler = compiler(
             llm = self.llm,
-            OPENAI_API_KEY = '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',
+            OPENAI_API_KEY = self.OPENAI_API_KEY,
             template = self.prompt_template,
             salesperson_name = salesperson_name,
             salesperson_role = salesperson_role,

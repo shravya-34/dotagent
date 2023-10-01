@@ -9,26 +9,28 @@ from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
 
-path = Path(__file__).parent / 'template.hbs'
+path = Path(__file__).parent / 'conversation_prompt.hbs'
 interview_template = Path(path).read_text()
 
 interview_memory = SimpleMemory()
 
-class Interview(BaseAgent):
+class Debate(BaseAgent):
     def __init__(self, 
                 use_tools: bool = False,
                 prompt_template: str = interview_template,
                 memory = interview_memory,
-                name = 'Interprep',
+                role = 'Republican',
+                user_role = "Democrat",
                 **kwargs):
         super().__init__(**kwargs)
 
         self.prompt_template = prompt_template
         self.use_tools = use_tools
         self.memory = memory
-        self.name = name
         self.llm = OpenAI(os.environ.get('OPENAI_MODEL'))
         self.OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
+        self.role = role
+        self.user_role = user_role
 
         self.compiler = compiler(
             llm = self.llm,
@@ -36,11 +38,22 @@ class Interview(BaseAgent):
             template = self.prompt_template,
             caching=kwargs.get('caching'),
             memory = self.memory,
-            name = self.name 
+            role = self.role,
+            user_role = self.user_role 
         )
         
-agent = Interview()
-print(agent.run(user_text = "hello!?"))
-print(agent.run(user_text = "I want to prepare for software development role"))
-print(agent.run(user_text = "Sure, I am a 4th year engineering student and I have been practicing code for a while now."))
-print(agent.run(user_text = 'End the test.'))
+role1_convo = " Online learning offers flexibility and convenience.It thus allows students to access educational resources from anywhere, at any time. This is particularly beneficial for non-traditional students, working adults, or those with busy schedules. "
+role1 = "Online Learning"
+role2 = "Traditional classroom learning"
+role1_agent = Debate(role=role1, user_role=role2)
+role2_agent = Debate(role=role2, user_role=role1)
+
+print(role1,": ",role1_convo)
+i = 1
+while(i<5):
+    role2_convo = role2_agent.run(user_text=role1_convo)
+    print(role2,": ",role2_convo)
+    role1_convo = role1_agent.run(user_text=role2_convo)
+    print(role1,": ",role1_convo)
+    i+=1
+print("End of debate")

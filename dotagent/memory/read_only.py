@@ -1,5 +1,4 @@
 from typing import Any, List
-
 from dotagent.memory.base import BaseMemory
 
 class ReadOnlyMemory(BaseMemory):
@@ -31,5 +30,4 @@ class ReadOnlyMemory(BaseMemory):
         prompts = []
         for conversation in self.memory.messages:
             prompts.append(conversation['prompt'])
-        
         return prompts

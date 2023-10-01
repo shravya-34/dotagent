@@ -68,7 +68,6 @@ async def add_text_to_chat_mode_generator(chat_mode):
     async for resp in chat_mode:
         if "choices" in resp:
             for c in resp['choices']:
-                
                 # move content from delta to text so we have a consistent interface with non-chat mode
                 found_content = False
                 if "content" in c['delta'] and c['delta']['content'] != "":

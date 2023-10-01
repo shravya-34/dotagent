@@ -1,7 +1,6 @@
-from __future__ import annotations
-
 """Base implementation for tools or skills."""
 
+from __future__ import annotations
 import warnings
 from abc import ABC, abstractmethod
 from inspect import signature
@@ -13,7 +12,6 @@ from pydantic import (
     root_validator,
     validate_arguments,
 )
-
 
 def _get_filtered_args(
     inferred_model: Type[BaseModel],

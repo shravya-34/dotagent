@@ -340,7 +340,6 @@ class Program:
             self.ConversationHistory = ConversationHistory
             kwargs["ConversationHistory"] = ConversationHistory
 
-
         log.debug(f"in __call__ with kwargs: {kwargs}")
 
         # create a new program object that we will execute in-place

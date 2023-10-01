@@ -1,4 +1,3 @@
-
 example="""
 {{#user~}}
 Current summary:

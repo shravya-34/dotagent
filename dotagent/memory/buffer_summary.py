@@ -1,13 +1,14 @@
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 from pydantic import BaseModel
 
 from dotagent import compiler
 from dotagent.memory import BaseMemory
-from dotagent.schema import BaseMessage
-from .prompt import SUMMARIZER_TEMPLATE
+from dotagent.schema import BaseMessage 
+from dotagent.memory.prompt import SUMMARIZER_TEMPLATE
 
 def extract_text(string):
-    """function for getting the user prompt and llm response from the compiler output"""
+    """Function for getting the user prompt and llm response from the compiler output"""
+
     end_string="<|im_end|>"
     start_string="New summary:<|im_end|>\n\n<|im_start|>assistant\n"
     string = string.replace(start_string, "", 1)
@@ -15,15 +16,16 @@ def extract_text(string):
     end_index = string.find(end_string, start_index + len(start_string))
     return string[start_index + len(start_string):end_index]
 
-
+# Generating summary of the current conversation. 
 class BufferSummaryMemory(BaseMemory, BaseModel):
     current_summary: str = ""
     current_buffer: str = ""
     messages_in_summary: List[Dict[BaseMessage, Any]] = []
     messages_in_buffer: List[Dict[BaseMessage, Any]] = []
 
-    def add_memory(self, prompt: str, llm_response: Any) -> None:
-        """Add a self-created message to the store"""
+    def add_memory(self, llm_response: Any, prompt: str) -> None:
+        """Add a new message to the store"""
+
         unique = True
         for conversation in self.messages:
             if conversation['prompt'] == prompt and conversation['llm_response']  == llm_response:
@@ -32,7 +34,7 @@ class BufferSummaryMemory(BaseMemory, BaseModel):
             self.messages.append({'prompt': prompt, 'llm_response': llm_response})
 
     def get_memory(self, **kwargs) -> str:
-        """Retrieve entire memory from the store."""
+        """Retrieve entire memory from the store, summarizes it, and returns it as text."""
 
         # Create llm instance
         llm = compiler.llms.OpenAI(model="gpt-3.5-turbo")

@@ -303,9 +303,7 @@ class BaseAgent:
         memory = None
         if config["memory"] is not None:
             # Instantiate the memory here in a similar manner
-            memory_module_name, memory_class_name = config["memory"]["type"].rsplit(
-                ".", 1
-            )
+            memory_module_name, memory_class_name = config["memory"]["type"].rsplit(".", 1)
             memory_module = importlib.import_module(memory_module_name)
             memory_class = getattr(memory_module, memory_class_name)
             memory = memory_class()

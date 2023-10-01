@@ -1,10 +1,12 @@
-from typing import Any, Dict, List
 from abc import ABC, abstractmethod
+from typing import Any, Dict, List
+
 from dotagent.schema import BaseMessage
 
 class BaseMemory(ABC):
-    """Abstract base class for memory management in a chatbot application. 
-    This class defines the interface for setting, getting, and checking existence of data in memory.
+    """ 
+        Abstract base class for memory management in a chatbot application. 
+        This class defines the interface for setting, getting, and checking existence of data in memory.
     """
 
     # All memories are stored in this list
@@ -36,5 +38,4 @@ class BaseMemory(ABC):
         prompts = []
         for conversation in self.messages:
             prompts.append(conversation['prompt'])
-        
         return prompts
