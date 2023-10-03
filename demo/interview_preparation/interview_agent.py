@@ -1,17 +1,18 @@
-import sys
-sys.path.append(r'D:\DotagentDemo\dotagent')
 import os 
+import sys
+from pathlib import Path
+
+from dotenv import load_dotenv
+load_dotenv()
+
+sys.path.append(r'D:/DotagentDemo/dotagent')
 from dotagent import compiler
 from dotagent.agent.base_agent import BaseAgent
 from dotagent.llms._openai import OpenAI
 from dotagent.memory import SimpleMemory
-from pathlib import Path
-from dotenv import load_dotenv
-load_dotenv()
 
 path = Path(__file__).parent / 'template.hbs'
 interview_template = Path(path).read_text()
-
 interview_memory = SimpleMemory()
 
 class Interview(BaseAgent):
