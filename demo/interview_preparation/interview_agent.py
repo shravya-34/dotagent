@@ -15,6 +15,15 @@ path = Path(__file__).parent / 'template.hbs'
 interview_template = Path(path).read_text()
 interview_memory = SimpleMemory()
 
+function = [
+    {"name": "add_numbers",
+     "description": "Adds two numbers",
+     "parameters": {
+        "a": "number",
+        "b": "number"
+      }
+    }]
+
 class Interview(BaseAgent):
     def __init__(self, 
                 use_tools: bool = False,
@@ -30,6 +39,7 @@ class Interview(BaseAgent):
         self.name = name
         self.llm = OpenAI(os.environ.get('OPENAI_MODEL'))
         self.OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
+        self.function = function
 
         self.compiler = compiler(
             llm = self.llm,
@@ -37,7 +47,8 @@ class Interview(BaseAgent):
             template = self.prompt_template,
             caching=kwargs.get('caching'),
             memory = self.memory,
-            name = self.name 
+            name = self.name ,
+            function = self.function
         )
         
 agent = Interview()
